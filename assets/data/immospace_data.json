@@ -1,0 +1,268 @@
+{
+  "properties": [
+    {
+      "id": "prop_001",
+      "titre": "Villa moderne avec piscine",
+      "description": "Magnifique villa contemporaine entièrement rénovée avec prestations haut de gamme. Piscine à débordement, terrasse panoramique, cuisine équipée Boffi. Vue dégagée sans vis-à-vis. Parquet ancien, moulures, cheminées en marbre.",
+      "prix": 425000,
+      "localisation": "Paris 16e",
+      "adresse": "12 Avenue Foch, 75016 Paris",
+      "surface": 75,
+      "pieces": 3,
+      "chambres": 3,
+      "salles_de_bain": 2,
+      "statut": "en_vente",
+      "images": [
+        "assets/images/property_1_main.jpg",
+        "assets/images/property_1_salon.jpg",
+        "assets/images/property_1_cuisine.jpg"
+      ],
+      "image_reseau": "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=800",
+      "panorama": "assets/panoramas/panorama_salon.jpg",
+      "panorama_reseau": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Camponotus_flavomarginatus_ant.jpg/1200px-Camponotus_flavomarginatus_ant.jpg",
+      "equipements": ["Balcon", "Cave", "Parking", "Ascenseur", "Gardien", "Fibre optique", "Piscine"],
+      "agent": {
+        "nom": "Sophie Martin",
+        "telephone": "+33 6 12 34 56 78",
+        "email": "sophie.martin@immospace.fr"
+      },
+      "vues_semaine": 145,
+      "pieces_detail": [
+        {
+          "id": "piece_001_salon",
+          "nom": "Salon",
+          "panorama": "assets/panoramas/panorama_salon.jpg",
+          "hotspots": [
+            {"id": "h1", "label": "Aller à la cuisine", "target_piece": "piece_001_cuisine", "x": 0.75, "y": 0.5},
+            {"id": "h2", "label": "Aller à la chambre", "target_piece": "piece_001_chambre", "x": 0.25, "y": 0.5}
+          ]
+        },
+        {
+          "id": "piece_001_cuisine",
+          "nom": "Cuisine",
+          "panorama": "assets/panoramas/panorama_cuisine.jpg",
+          "hotspots": [
+            {"id": "h3", "label": "Retour salon", "target_piece": "piece_001_salon", "x": 0.5, "y": 0.5}
+          ]
+        },
+        {
+          "id": "piece_001_chambre",
+          "nom": "Chambre principale",
+          "panorama": "assets/panoramas/panorama_chambre.jpg",
+          "hotspots": [
+            {"id": "h4", "label": "Salle de bain", "target_piece": "piece_001_sdb", "x": 0.8, "y": 0.5},
+            {"id": "h5", "label": "Retour salon", "target_piece": "piece_001_salon", "x": 0.2, "y": 0.5}
+          ]
+        },
+        {
+          "id": "piece_001_sdb",
+          "nom": "Salle de bain",
+          "panorama": "assets/panoramas/panorama_sdb.jpg",
+          "hotspots": [
+            {"id": "h6", "label": "Retour chambre", "target_piece": "piece_001_chambre", "x": 0.5, "y": 0.5}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "prop_002",
+      "titre": "Appartement de luxe duplex",
+      "description": "Splendide appartement en duplex avec terrasse panoramique. Prestations haut de gamme, cuisine équipée Gaggenau, dressing sur mesure. Immeuble de standing avec gardien 24h/24.",
+      "prix": 890000,
+      "localisation": "Neuilly-sur-Seine",
+      "adresse": "45 Boulevard Victor Hugo, 92200 Neuilly",
+      "surface": 120,
+      "pieces": 4,
+      "chambres": 3,
+      "salles_de_bain": 2,
+      "statut": "en_vente",
+      "images": [
+        "assets/images/property_2_main.jpg"
+      ],
+      "image_reseau": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800",
+      "panorama": "assets/panoramas/panorama_salon.jpg",
+      "equipements": ["Terrasse 40m²", "Parking double", "Cave", "Digicode", "Interphone vidéo"],
+      "agent": {
+        "nom": "Pierre Dubois",
+        "telephone": "+33 6 98 76 54 32",
+        "email": "p.dubois@immospace.fr"
+      },
+      "vues_semaine": 89,
+      "pieces_detail": [
+        {
+          "id": "piece_002_salon",
+          "nom": "Salon",
+          "panorama": "assets/panoramas/panorama_salon.jpg",
+          "hotspots": [
+            {"id": "h7", "label": "Terrasse", "target_piece": "piece_002_terrasse", "x": 0.9, "y": 0.5}
+          ]
+        },
+        {
+          "id": "piece_002_terrasse",
+          "nom": "Terrasse",
+          "panorama": "assets/panoramas/panorama_salon.jpg",
+          "hotspots": [
+            {"id": "h8", "label": "Retour salon", "target_piece": "piece_002_salon", "x": 0.1, "y": 0.5}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "prop_003",
+      "titre": "Villa contemporaine avec jardin",
+      "description": "Belle villa contemporaine avec jardin paysager de 500m². Architecture moderne, grandes baies vitrées, piscine chauffée. Proche commerces et transports.",
+      "prix": 650000,
+      "localisation": "Lyon 6e",
+      "adresse": "8 Rue de Sèze, 69006 Lyon",
+      "surface": 95,
+      "pieces": 3,
+      "chambres": 4,
+      "salles_de_bain": 2,
+      "statut": "en_vente",
+      "images": [
+        "assets/images/property_3_main.jpg"
+      ],
+      "image_reseau": "https://images.unsplash.com/photo-1449844908441-8829872d2607?w=800",
+      "panorama": "assets/panoramas/panorama_salon.jpg",
+      "equipements": ["Jardin 500m²", "Garage", "Piscine chauffée", "Alarme", "Domotique"],
+      "agent": {
+        "nom": "Marie Leclerc",
+        "telephone": "+33 6 45 67 89 01",
+        "email": "m.leclerc@immospace.fr"
+      },
+      "vues_semaine": 212,
+      "pieces_detail": [
+        {
+          "id": "piece_003_salon",
+          "nom": "Salon",
+          "panorama": "assets/panoramas/panorama_salon.jpg",
+          "hotspots": [
+            {"id": "h9", "label": "Jardin", "target_piece": "piece_003_jardin", "x": 0.85, "y": 0.5},
+            {"id": "h10", "label": "Cuisine", "target_piece": "piece_003_cuisine", "x": 0.3, "y": 0.5}
+          ]
+        },
+        {
+          "id": "piece_003_jardin",
+          "nom": "Jardin",
+          "panorama": "assets/panoramas/panorama_salon.jpg",
+          "hotspots": [
+            {"id": "h11", "label": "Retour salon", "target_piece": "piece_003_salon", "x": 0.5, "y": 0.5}
+          ]
+        },
+        {
+          "id": "piece_003_cuisine",
+          "nom": "Cuisine",
+          "panorama": "assets/panoramas/panorama_cuisine.jpg",
+          "hotspots": [
+            {"id": "h12", "label": "Retour salon", "target_piece": "piece_003_salon", "x": 0.5, "y": 0.5}
+          ]
+        }
+      ]
+    }
+  ],
+  "meubles": [
+    {
+      "id": "meuble_001",
+      "nom": "Canapé Chesterfield",
+      "categorie": "salon",
+      "sous_categorie": "Canapés",
+      "modele_3d": "assets/models_3d/canape_chesterfield.glb",
+      "image": "assets/images/meuble_canape.jpg",
+      "description": "Canapé 3 places en cuir vieilli, style classique anglais. Dimensions : 220x90x85 cm.",
+      "dimensions": {"largeur": 220, "profondeur": 90, "hauteur": 85},
+      "couleurs": ["Marron", "Noir", "Crème"],
+      "prix_reference": 1850
+    },
+    {
+      "id": "meuble_002",
+      "nom": "Fauteuil Scandinave",
+      "categorie": "salon",
+      "sous_categorie": "Fauteuils",
+      "modele_3d": "assets/models_3d/fauteuil_scandinave.glb",
+      "image": "assets/images/meuble_fauteuil.jpg",
+      "description": "Fauteuil en tissu gris anthracite, pieds en bois de chêne. Design minimaliste nordique.",
+      "dimensions": {"largeur": 75, "profondeur": 80, "hauteur": 90},
+      "couleurs": ["Gris", "Beige", "Bleu canard"],
+      "prix_reference": 620
+    },
+    {
+      "id": "meuble_003",
+      "nom": "Table basse en marbre",
+      "categorie": "salon",
+      "sous_categorie": "Tables",
+      "modele_3d": "assets/models_3d/table_marbre.glb",
+      "image": "assets/images/meuble_table.jpg",
+      "description": "Table basse plateau en marbre blanc de Carrare, pieds dorés. Élégance et modernité.",
+      "dimensions": {"largeur": 120, "profondeur": 60, "hauteur": 40},
+      "couleurs": ["Blanc/Or", "Noir/Or"],
+      "prix_reference": 980
+    },
+    {
+      "id": "meuble_004",
+      "nom": "Lampe sur pied Arco",
+      "categorie": "eclairage",
+      "sous_categorie": "Lampes",
+      "modele_3d": "assets/models_3d/lampe_arco.glb",
+      "image": "assets/images/meuble_lampe.jpg",
+      "description": "Lampe arc en acier inoxydable brossé avec abat-jour en marbre. Réglable en hauteur.",
+      "dimensions": {"largeur": 60, "profondeur": 60, "hauteur": 230},
+      "couleurs": ["Chrome", "Noir mat"],
+      "prix_reference": 450
+    },
+    {
+      "id": "meuble_005",
+      "nom": "Bibliothèque modulable",
+      "categorie": "rangement",
+      "sous_categorie": "Bibliothèques",
+      "modele_3d": "assets/models_3d/bibliotheque.glb",
+      "image": "assets/images/meuble_bibliotheque.jpg",
+      "description": "Bibliothèque ouverte 5 niveaux en bois de noyer massif. Style contemporain.",
+      "dimensions": {"largeur": 180, "profondeur": 35, "hauteur": 200},
+      "couleurs": ["Noyer", "Chêne", "Blanc"],
+      "prix_reference": 1200
+    },
+    {
+      "id": "meuble_006",
+      "nom": "Meuble TV flottant",
+      "categorie": "salon",
+      "sous_categorie": "Meubles TV",
+      "modele_3d": "assets/models_3d/meuble_tv.glb",
+      "image": "assets/images/meuble_tv.jpg",
+      "description": "Meuble TV suspendu 180cm, 3 tiroirs soft-close, LED intégrée. Finition laquée.",
+      "dimensions": {"largeur": 180, "profondeur": 40, "hauteur": 45},
+      "couleurs": ["Blanc", "Noir", "Chêne"],
+      "prix_reference": 750
+    },
+    {
+      "id": "meuble_007",
+      "nom": "Lit plateforme King Size",
+      "categorie": "chambre",
+      "sous_categorie": "Lits",
+      "modele_3d": "assets/models_3d/lit_plateforme.glb",
+      "image": "assets/images/meuble_lit.jpg",
+      "description": "Lit plateforme 180x200cm avec tête de lit capitonnée en velours. Coffre de rangement intégré.",
+      "dimensions": {"largeur": 210, "profondeur": 230, "hauteur": 110},
+      "couleurs": ["Gris perle", "Bleu nuit", "Beige"],
+      "prix_reference": 1650
+    },
+    {
+      "id": "meuble_008",
+      "nom": "Plante décorative Monstera",
+      "categorie": "decoration",
+      "sous_categorie": "Décorations",
+      "modele_3d": "assets/models_3d/plante_monstera.glb",
+      "image": "assets/images/meuble_plante.jpg",
+      "description": "Grande plante Monstera Deliciosa artificielle ultra-réaliste dans un pot en céramique.",
+      "dimensions": {"largeur": 60, "profondeur": 60, "hauteur": 150},
+      "couleurs": ["Vert/Blanc", "Vert/Noir"],
+      "prix_reference": 180
+    }
+  ],
+  "categories_meubles": [
+    {"id": "salon", "nom": "Salon", "icone": "sofa"},
+    {"id": "chambre", "nom": "Chambre", "icone": "bed"},
+    {"id": "eclairage", "nom": "Éclairage", "icone": "lamp"},
+    {"id": "rangement", "nom": "Rangement", "icone": "shelf"},
+    {"id": "decoration", "nom": "Décoration", "icone": "plant"}
+  ]
+}
