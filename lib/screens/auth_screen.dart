@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'dashboard_screen.dart';
+import '../data/auth_service.dart';
 
 // ─── Design Tokens (from Figma) ───────────────────────────────────────────────
 const _kGold = Color(0xFFC9A84C);
@@ -33,9 +34,9 @@ class _AuthScreenState extends State<AuthScreen>
 
   // controllers
   final _nameCtrl = TextEditingController();
-  final _emailCtrl = TextEditingController(text: 'angedemanou0@gmail.com');
+  final _emailCtrl = TextEditingController();
   final _phoneCtrl = TextEditingController();
-  final _passCtrl = TextEditingController(text: '••••••••');
+  final _passCtrl = TextEditingController();
   final _confirmCtrl = TextEditingController();
 
   bool _passVisible = false;
@@ -54,12 +55,84 @@ class _AuthScreenState extends State<AuthScreen>
   }
 
   void _showSnack(String msg) {
+    FocusScope.of(context).unfocus(); // Ferme le clavier pour libérer de l'espace visuel
+    ScaffoldMessenger.of(context).clearSnackBars(); // Supprime immédiatement l'ancienne alerte pour afficher la nouvelle
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(msg, style: const TextStyle(fontSize: 13)),
       backgroundColor: const Color(0xFF1C1917),
       behavior: SnackBarBehavior.floating,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     ));
+  }
+
+  Future<void> _handleLogin() async {
+    final email = _emailCtrl.text.trim();
+    final password = _passCtrl.text;
+
+    if (email.isEmpty || password.isEmpty) {
+      _showSnack('Veuillez remplir tous les champs.');
+      return;
+    }
+
+    if (!email.contains('@')) {
+      _showSnack('Format d\'adresse e-mail invalide.');
+      return;
+    }
+
+    final error = await AuthService.loginUser(email: email, password: password);
+    if (error != null) {
+      _showSnack(error);
+    } else {
+      _showSnack('Connexion réussie.');
+      _goToDashboard();
+    }
+  }
+
+  Future<void> _handleSignup() async {
+    final name = _nameCtrl.text.trim();
+    final email = _emailCtrl.text.trim();
+    final phone = _phoneCtrl.text.trim();
+    final password = _passCtrl.text;
+    final confirm = _confirmCtrl.text;
+
+    if (name.isEmpty || email.isEmpty || phone.isEmpty || password.isEmpty || confirm.isEmpty) {
+      _showSnack('Veuillez remplir tous les champs.');
+      return;
+    }
+
+    if (!email.contains('@')) {
+      _showSnack('Format d\'adresse e-mail invalide.');
+      return;
+    }
+
+    if (password.length < 6) {
+      _showSnack('Le mot de passe doit contenir au moins 6 caractères.');
+      return;
+    }
+
+    if (password != confirm) {
+      _showSnack('Les mots de passe ne correspondent pas.');
+      return;
+    }
+
+    if (!_acceptTerms) {
+      _showSnack('Veuillez accepter les conditions générales et la politique de confidentialité.');
+      return;
+    }
+
+    final error = await AuthService.registerUser(
+      name: name,
+      email: email,
+      phone: phone,
+      password: password,
+    );
+
+    if (error != null) {
+      _showSnack(error);
+    } else {
+      _showSnack('Compte créé avec succès.');
+      _goToDashboard();
+    }
   }
 
   @override
@@ -106,7 +179,7 @@ class _AuthScreenState extends State<AuthScreen>
                       passVisible: _passVisible,
                       onTogglePass: () =>
                           setState(() => _passVisible = !_passVisible),
-                      onLogin: _goToDashboard,
+                      onLogin: _handleLogin,
                       onGoSignup: () =>
                           setState(() => _view = _AuthView.signup),
                       onGoForgot: () =>
@@ -133,7 +206,7 @@ class _AuthScreenState extends State<AuthScreen>
                               setState(() => _confirmVisible = !_confirmVisible),
                           onToggleTerms: (v) =>
                               setState(() => _acceptTerms = v ?? false),
-                          onSignup: _goToDashboard,
+                          onSignup: _handleSignup,
                           onGoLogin: () =>
                               setState(() => _view = _AuthView.login),
                           onGoogleTap: () => _showSnack(

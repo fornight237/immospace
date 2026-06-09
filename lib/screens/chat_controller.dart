@@ -54,7 +54,7 @@ class ChatController extends ChangeNotifier {
       'avatar':
           'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=120',
       'lastMessage':
-          'Le dossier de diagnostic financier du Penthouse à Lyon 6e (650k €) est en cours de validation.',
+          'Le dossier de diagnostic financier du Penthouse à Lyon 6e (425M F CFA) est en cours de validation.',
       'lastTime': 'Hier',
       'unread': false,
       'messages': [
@@ -73,7 +73,7 @@ class ChatController extends ChangeNotifier {
         {
           'sender': 'agent',
           'text':
-              'Le dossier de diagnostic financier du Penthouse à Lyon 6e (650k €) est en cours de validation.',
+              'Le dossier de diagnostic financier du Penthouse à Lyon 6e (425M F CFA) est en cours de validation.',
           'time': 'Hier, 15:20'
         }
       ]

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:camera/camera.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../models/property.dart';
 import '../data/mock_data.dart';
@@ -28,7 +29,7 @@ class _OwnerAdminScreenState extends State<OwnerAdminScreen>
       TextEditingController(text: "Villa d'Élite Panoramique");
   final _addressController =
       TextEditingController(text: "75 Chemin des Collines, 06400 Cannes");
-  final _priceController = TextEditingController(text: "1 450 000 €");
+  final _priceController = TextEditingController(text: "950 000 000 F CFA");
   final _descriptionController = TextEditingController(
       text:
           "Une somptueuse villa contemporaine offrant des prestations d'exception, nichée sur les hauteurs de Cannes avec une vue panoramique infinie sur la mer Méditerranée.");
@@ -79,9 +80,47 @@ class _OwnerAdminScreenState extends State<OwnerAdminScreen>
   final List<Hotspot> _customHotspots = [];
   String _selectedTargetRoomToLink = 'room-neuilly-salon';
 
+  // Camera integration state
+  CameraController? _cameraController;
+  bool _cameraInitialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initCamera();
+  }
+
+  Future<void> _initCamera() async {
+    try {
+      final cameras = await availableCameras();
+      if (cameras.isEmpty) return;
+
+      final backCam = cameras.firstWhere(
+        (c) => c.lensDirection == CameraLensDirection.back,
+        orElse: () => cameras.first,
+      );
+
+      _cameraController = CameraController(
+        backCam,
+        ResolutionPreset.medium,
+        enableAudio: false,
+      );
+
+      await _cameraController!.initialize();
+      if (mounted) {
+        setState(() {
+          _cameraInitialized = true;
+        });
+      }
+    } catch (e) {
+      debugPrint("Erreur initialisation caméra: $e");
+    }
+  }
+
   @override
   void dispose() {
     _captureTimer?.cancel();
+    _cameraController?.dispose();
     _titleController.dispose();
     _addressController.dispose();
     _priceController.dispose();
@@ -441,7 +480,7 @@ class _OwnerAdminScreenState extends State<OwnerAdminScreen>
             Expanded(
                 child: _buildAdminInput(
                     "Budget de prestige estimé", _priceController,
-                    hint: "1 200 000 €")),
+                    hint: "800 000 000 F CFA")),
             const SizedBox(width: 14),
             Expanded(
                 child: _buildAdminInput(
@@ -604,18 +643,28 @@ class _OwnerAdminScreenState extends State<OwnerAdminScreen>
           child: Stack(
             clipBehavior: Clip.antiAlias,
             children: [
-              // Faux background camera stream of a noble room with a grid structure
+              // Real camera stream or noble room fallback
               Positioned.fill(
-                child: Opacity(
-                  opacity: 0.4,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(23),
-                    child: Image.network(
-                      _roomPresetPanoramas[_selectedPanoramaPresetIndex]
-                          ['url']!,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(23),
+                  child: _cameraInitialized && _cameraController != null && _cameraController!.value.isInitialized
+                      ? SizedBox.expand(
+                          child: FittedBox(
+                            fit: BoxFit.cover,
+                            child: SizedBox(
+                              width: _cameraController!.value.previewSize!.height,
+                              height: _cameraController!.value.previewSize!.width,
+                              child: CameraPreview(_cameraController!),
+                            ),
+                          ),
+                        )
+                      : Opacity(
+                          opacity: 0.4,
+                          child: Image.network(
+                            _roomPresetPanoramas[_selectedPanoramaPresetIndex]['url']!,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                 ),
               ),
 

@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../models/property.dart';
 import '../data/mock_data.dart';
@@ -8,6 +9,8 @@ import 'vr_tour_screen.dart';
 import 'ar_placement_screen.dart';
 import 'owner_admin_screen.dart';
 import 'chat_controller.dart';
+import 'auth_screen.dart';
+import '../data/auth_service.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -18,13 +21,13 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   int _activeTabIndex =
-      0; // 0: Recherche, 1: Favoris, 2: RDV, 3: Messages, 4: Profil
+      0; // 0: Recherche, 1: Favoris, 2: Messages, 3: Profil
 
   // Storage & State
   final List<String> _favoriteIds = ['prop-1', 'prop-2'];
   String _searchQuery = '';
   int? _minRooms;
-  double _maxPrice = 1000000;
+  double _maxPrice = 1000000000;
 
   // Real Messenger state
   final _messageController = TextEditingController();
@@ -83,9 +86,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
+  Map<String, String>? _currentUser;
+
   @override
   void initState() {
     super.initState();
+    _currentUser = AuthService.getCurrentUser();
     _chatController.addListener(() {
       if (mounted) {
         setState(() {});
@@ -121,6 +127,157 @@ class _DashboardScreenState extends State<DashboardScreen> {
     _messageController.clear();
     _chatController.sendMessage(text);
     _scrollToBottom();
+  }
+
+  void _verifyOwnerAccess() {
+    final passwordController = TextEditingController();
+    bool obscureText = true;
+
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            return AlertDialog(
+              backgroundColor: const Color(0xFF1C1917), // stone-900
+              surfaceTintColor: Colors.transparent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+                side: const BorderSide(color: Color(0xFFC5A153), width: 1.5),
+              ),
+              title: Center(
+                child: Text(
+                  "ACCÈS SÉCURISÉ",
+                  style: GoogleFonts.playfairDisplay(
+                    color: const Color(0xFFC5A153),
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.2,
+                  ),
+                ),
+              ),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "Veuillez saisir votre mot de passe pour accéder à l'Espace Propriétaire.",
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.inter(
+                      color: Colors.white70,
+                      fontSize: 13,
+                      height: 1.5,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    height: 54,
+                    decoration: ShapeDecoration(
+                      color: const Color(0x1AFFFFFF),
+                      shape: RoundedRectangleBorder(
+                        side: const BorderSide(width: 1.0, color: Color(0x66C9A84C)),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 14),
+                        Expanded(
+                          child: TextField(
+                            controller: passwordController,
+                            obscureText: obscureText,
+                            style: GoogleFonts.inter(color: Colors.white, fontSize: 14),
+                            decoration: InputDecoration(
+                              hintText: 'Mot de passe',
+                              hintStyle: GoogleFonts.inter(color: Colors.white54, fontSize: 14),
+                              border: InputBorder.none,
+                              isDense: true,
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            obscureText ? LucideIcons.eye : LucideIcons.eyeOff,
+                            size: 18,
+                            color: Colors.white54,
+                          ),
+                          onPressed: () {
+                            setDialogState(() {
+                              obscureText = !obscureText;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              actionsAlignment: MainAxisAlignment.spaceEvenly,
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(
+                    "ANNULER",
+                    style: GoogleFonts.inter(
+                      color: Colors.white54,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.0,
+                    ),
+                  ),
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFC5A153),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  ),
+                  onPressed: () {
+                    final enteredPass = passwordController.text;
+                    if (AuthService.verifyCurrentPassword(enteredPass)) {
+                      Navigator.pop(context); // Close dialog
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => OwnerAdminScreen(
+                            onPropertyAdded: () {
+                              setState(() {});
+                            },
+                          ),
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: const Text(
+                            "Mot de passe incorrect.",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                          backgroundColor: Colors.redAccent,
+                          behavior: SnackBarBehavior.floating,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        ),
+                      );
+                    }
+                  },
+                  child: Text(
+                    "VALIDER",
+                    style: GoogleFonts.inter(
+                      color: Colors.black,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.0,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
   }
 
   void _bookViewing(Property prop) {
@@ -258,7 +415,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           prop.title.toLowerCase().contains(_searchQuery.toLowerCase()) ||
               prop.address.toLowerCase().contains(_searchQuery.toLowerCase());
       final priceNum = int.tryParse(
-              prop.price.replaceAll(RegExp(r'\s'), '').replaceAll('€', '')) ??
+              prop.price.replaceAll(RegExp(r'[^0-9]'), '')) ??
           0;
       final matchesPrice = priceNum <= _maxPrice;
       final matchesRooms =
@@ -361,7 +518,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             ),
                           ),
                           Text(
-                            "ANGE TRECY (PROPRIÉTAIRE)",
+                            (_currentUser?['name'] ?? "ANGE TRECY (PROPRIÉTAIRE)").toUpperCase(),
                             style: TextStyle(
                               color: const Color(0xFFC5A153)
                                   .withValues(alpha: 0.8),
@@ -419,10 +576,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       iconColor: const Color(0xFFC5A153),
                       onTap: () {
                         Navigator.pop(context);
-                        setState(() {
-                          _activeTabIndex =
-                              2; // Jump directly to the Espace Propriétaire tab!
-                        });
+                        _verifyOwnerAccess();
                       },
                     ),
                   ),
@@ -432,7 +586,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     onTap: () {
                       Navigator.pop(context);
                       setState(() {
-                        _activeTabIndex = 3;
+                        _activeTabIndex = 2;
                       });
                     },
                   ),
@@ -455,7 +609,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     onTap: () {
                       Navigator.pop(context);
                       setState(() {
-                        _activeTabIndex = 4;
+                        _activeTabIndex = 3;
                       });
                     },
                   ),
@@ -514,8 +668,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
             label: 'Favoris',
           ),
           const BottomNavigationBarItem(
-              icon: Icon(LucideIcons.camera, size: 20), label: 'Propriétaire'),
-          const BottomNavigationBarItem(
               icon: Icon(LucideIcons.messageSquare, size: 20),
               label: 'Messages'),
           const BottomNavigationBarItem(
@@ -532,16 +684,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case 1:
         return _buildFavorisTab();
       case 2:
-        return OwnerAdminScreen(
-          onPropertyAdded: () {
-            setState(() {
-              // Refresh listings in UI
-            });
-          },
-        );
-      case 3:
         return _buildMessagesTab();
-      case 4:
+      case 3:
         return _buildProfilTab();
       default:
         return const Center(child: Text("S'PACE"));
@@ -579,7 +723,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Bonjour, Ange Trecy',
+                  'Bonjour, ${_currentUser?['name'] ?? "Ange Trecy"}',
                   style: GoogleFonts.playfairDisplay(
                     color: const Color(0xFF0D0D0D),
                     fontSize: 24,
@@ -661,18 +805,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Text("Budget maximum",
                       style: GoogleFonts.inter(
                           fontSize: 12, color: const Color(0xFF57534E))),
-                  Text("${_maxPrice.toInt().toString()} €",
+                  Text(NumberFormat.currency(symbol: 'F CFA', decimalDigits: 0, locale: 'fr').format(_maxPrice),
                       style: GoogleFonts.inter(
-                          fontSize: 12,
+                          fontSize: 11,
                           fontWeight: FontWeight.bold,
                           color: const Color(0xFFC49A45))),
                 ],
               ),
               Slider(
                 value: _maxPrice,
-                min: 400000,
-                max: 1000000,
-                divisions: 12,
+                min: 200000000,
+                max: 1000000000,
+                divisions: 16,
                 activeColor: const Color(0xFFC5A153),
                 inactiveColor: const Color(0xFFEDE6D9),
                 onChanged: (val) {
@@ -1569,13 +1713,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Column(
               children: [
                 _buildInfoRow(
-                    LucideIcons.user, 'Nom complet', 'Ange Trecy Demanou',
+                    LucideIcons.user, 'Nom complet', _currentUser?['name'] ?? 'Ange Trecy Demanou',
                     showDivider: true),
                 _buildInfoRow(
-                    LucideIcons.mail, 'E-mail', 'angedemanou0@gmail.com',
+                    LucideIcons.mail, 'E-mail', _currentUser?['email'] ?? 'angedemanou0@gmail.com',
                     showDivider: true),
                 _buildInfoRow(
-                    LucideIcons.phone, 'Téléphone', '+237 6 80 46 08 09',
+                    LucideIcons.phone, 'Téléphone', _currentUser?['phone'] ?? '+237 6 80 46 08 09',
                     showDivider: false),
               ],
             ),
@@ -1719,16 +1863,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           letterSpacing: 1.0),
                     ),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => OwnerAdminScreen(
-                            onPropertyAdded: () {
-                              setState(() {});
-                            },
-                          ),
-                        ),
-                      );
+                      _verifyOwnerAccess();
                     },
                   ),
                 ),
@@ -1804,8 +1939,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              onPressed: () {
-                Navigator.pushReplacementNamed(context, '/auth');
+              onPressed: () async {
+                await AuthService.logoutUser();
+                if (!mounted) return;
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => const AuthScreen()),
+                  (route) => false,
+                );
               },
             ),
           ),

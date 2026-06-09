@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import '../widgets/space_logo.dart';
 import 'auth_screen.dart';
+import 'dashboard_screen.dart';
+import '../data/auth_service.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -29,13 +31,14 @@ class _SplashScreenState extends State<SplashScreen>
 
     _controller.forward();
 
-    // Elegant automatic transition to authenticate
+    // Elegant automatic transition to authenticate or dashboard
     Timer(const Duration(milliseconds: 2400), () {
       if (mounted) {
+        final hasSession = AuthService.isLoggedIn();
         Navigator.of(context).pushReplacement(
           PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) =>
-                const AuthScreen(),
+                hasSession ? const DashboardScreen() : const AuthScreen(),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
               return FadeTransition(opacity: animation, child: child);

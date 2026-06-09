@@ -7,7 +7,7 @@ class MockData {
       id: 'prop-1',
       title: 'Appartement de standing - Neuilly-sur-Seine',
       address: 'Boulevard Victor Hugo, 92200 Neuilly-sur-Seine',
-      price: '890 000 €',
+      price: '580 000 000 F CFA',
       description: 'Baigné de lumière naturelle, cet appartement d\'exception de 120 m² offre de superbes volumes, un double séjour raffiné, des parquets d\'époque point de Hongrie et des moulures d\'origine. Idéalement situé dans un quartier résidentiel très recherché.',
       image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800',
       bedroomsCount: 3,
@@ -62,7 +62,7 @@ class MockData {
       id: 'prop-2',
       title: 'Studio d\'Architecte - Paris 16e',
       address: 'Avenue de Versailles, 75016 Paris',
-      price: '425 000 €',
+      price: '278 000 000 F CFA',
       description: 'Une optimisation d\'espace remarquable par un architecte de renom pour ce superbe 3 pièces de 75 m². Cuisine haut de gamme intégrée, salon feutré avec verrière contemporaine et de nombreux rangements sur mesure intégrés.',
       image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&q=80&w=800',
       bedroomsCount: 2,
@@ -95,7 +95,7 @@ class MockData {
       id: 'prop-3',
       title: 'Penthouse Panoramique - Lyon 6e',
       address: 'Place du Maréchal Lyautey, 69006 Lyon',
-      price: '650 000 €',
+      price: '425 000 000 F CFA',
       description: 'Perché au dernier étage d\'un immeuble de grand standing, ce penthouse de 95 m² dispose d\'une impressionnante terrasse de plain-pied avec vue splendide sur les toits et le fleuve. Finitions luxueuses, climatisation discrète intégrée.',
       image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800',
       bedroomsCount: 2,
@@ -136,7 +136,7 @@ class MockData {
       depthCm: 60,
       iconEmoji: '🛋️',
       description: 'Dessinée par Warren Platner en 1966 pour Knoll. Structure faite d\'un faisceau de tiges d\'acier cintrées, coiffée d\'un splendide plateau en verre trempé.',
-      price: 1890,
+      price: 1200000,
       colors: [
         FurnitureColor(name: 'Acier Poli', hex: '#e2e8f0'),
         FurnitureColor(name: 'Or Fin 18k', hex: '#c5a153'),
@@ -154,7 +154,7 @@ class MockData {
       depthCm: 90,
       iconEmoji: '🪵',
       description: 'Création phare d\'Eero Saarinen en 1957. Piétement central sculptural en fonte d\'aluminium laquée blanche et plateau en marbre de Carrare.',
-      price: 5490,
+      price: 3600000,
       colors: [
         FurnitureColor(name: 'Marbre de Carrare', hex: '#ede6d9'),
         FurnitureColor(name: 'Marbre Noir Marquina', hex: '#1e293b'),
@@ -171,7 +171,7 @@ class MockData {
       depthCm: 80,
       iconEmoji: '🪑',
       description: 'Icône suprême créée en 1956 par Charles & Ray Eames. Coque en contreplaqué galbé de palissandre des Indes et cuir premium capitonné.',
-      price: 7890,
+      price: 5100000,
       colors: [
         FurnitureColor(name: 'Cuir Noir Premium', hex: '#111827'),
         FurnitureColor(name: 'Cuir Chocolat', hex: '#451a03'),
@@ -189,7 +189,7 @@ class MockData {
       depthCm: 105,
       iconEmoji: '🛋️',
       description: 'Le mythique canapé tout en mousse sans structure de Michel Ducaroy de 1973. Confort inimitable enveloppé de velours plissé.',
-      price: 3650,
+      price: 2400000,
       colors: [
         FurnitureColor(name: 'Velours Safran', hex: '#eab308'),
         FurnitureColor(name: 'Alcantara Vert d\'Eau', hex: '#14b8a6'),
@@ -207,7 +207,7 @@ class MockData {
       depthCm: 215,
       iconEmoji: '🛏️',
       description: 'Design épuré d\'Antonio Citterio. Pieds signature en étrier d\'aluminium brossé et structure suspendue habillée de lin naturel.',
-      price: 4890,
+      price: 3200000,
       colors: [
         FurnitureColor(name: 'Tissu Lin Ivoire', hex: '#f5f5f4'),
         FurnitureColor(name: 'Lin Gris Flanelle', hex: '#57534e'),
@@ -224,7 +224,7 @@ class MockData {
       depthCm: 160,
       iconEmoji: '💡',
       description: 'Créé en 1962 par Castiglioni. Base rectangulaire en marbre blanc de Carrare de 65 kg et tige arquée en acier inoxydable brossé.',
-      price: 2350,
+      price: 1500000,
       colors: [
         FurnitureColor(name: 'Acier brossé / Marbre', hex: '#cbd5e1'),
         FurnitureColor(name: 'Édition Or 50e Anniversaire', hex: '#c5a153'),
@@ -241,7 +241,7 @@ class MockData {
       depthCm: 70,
       iconEmoji: '🌿',
       description: 'Plante naturelle soigneusement sélectionnée, proposée dans son pot d\'argile brute artisanale de Toscane.',
-      price: 120,
+      price: 80000,
       colors: [
         FurnitureColor(name: 'Terre Cuite d\'Impruneta', hex: '#c2410c'),
         FurnitureColor(name: 'Céramique Blanche', hex: '#ffffff'),
@@ -258,7 +258,7 @@ class MockData {
       depthCm: 4,
       iconEmoji: '🪞',
       description: 'Dessiné par Jacques Adnet en 1950. Cadre sculpté en cuir de sellerie surpiqué d\'origine, avec passants en laiton brossé.',
-      price: 1150,
+      price: 750000,
       colors: [
         FurnitureColor(name: 'Cuir Cognac', hex: '#b45309'),
         FurnitureColor(name: 'Cuir Noir Surpiqué', hex: '#1c1917'),

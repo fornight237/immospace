@@ -6,6 +6,7 @@ import 'package:camera/camera.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import '../models/furniture.dart';
 import '../data/mock_data.dart';
 
@@ -615,10 +616,10 @@ class _ArPlacementScreenState extends State<ArPlacementScreen>
                     ),
                   ),
                   Text(
-                    '${_totalBudget()} €',
+                    NumberFormat.currency(symbol: 'F CFA', decimalDigits: 0, locale: 'fr').format(_totalBudget()),
                     style: GoogleFonts.inter(
                       color: _kGold,
-                      fontSize: 14,
+                      fontSize: 13,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -917,10 +918,10 @@ class _ArPlacementScreenState extends State<ArPlacementScreen>
                               Text(item.iconEmoji,
                                   style: const TextStyle(fontSize: 20)),
                               Text(
-                                '${item.price} €',
+                                NumberFormat.currency(symbol: 'F CFA', decimalDigits: 0, locale: 'fr').format(item.price),
                                 style: GoogleFonts.inter(
                                   color: _kGold,
-                                  fontSize: 10,
+                                  fontSize: 8,
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),

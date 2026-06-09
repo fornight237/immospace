@@ -3,8 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'screens/splash_screen.dart';
 
-void main() {
+import 'data/auth_service.dart';
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize local database authentication service
+  await AuthService.init();
 
   // Force clean landscape or portrait
   SystemChrome.setPreferredOrientations([
