@@ -35,6 +35,8 @@ jobs:
           sudo apt-get install -y unzip wget
           export ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT:-$HOME/Android/Sdk}
           mkdir -p "$ANDROID_SDK_ROOT/cmdline-tools"
+          # remove any existing 'latest' to avoid mv failures
+          sudo rm -rf "$ANDROID_SDK_ROOT/cmdline-tools/latest" || true
           cd /tmp
           wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline.zip
           unzip -q cmdline.zip -d cmdline
