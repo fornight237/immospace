@@ -1,0 +1,610 @@
+Tu es un ingénieur logiciel senior spécialisé en Android, Kotlin, React Native, Expo, TypeScript, SQLite, REST API, Gradle et applications mobiles fiables.
+
+============================================================
+MISSION
+============================================================
+
+Fais l'audit complet de ce projet existant, puis mets à jour les fichiers et la logique métier déjà en place afin qu'ils correspondent aux nouvelles exigences décrites ci-dessous.
+
+Il n'est PAS question de réinventer le projet ni de le réécrire depuis zéro.
+
+Il est question d'adapter ce qui existe déjà, en respectant scrupuleusement la logique métier actuelle qui fonctionne, pour éviter de la briser.
+
+Aucune compilation avec EAS n'est requise ni attendue. Le projet ne doit PAS dépendre d'EAS, ne doit PAS contenir de configuration EAS, et aucune étape de la mission ne doit faire référence à EAS, à un build cloud EAS, à eas.json, ni à un profil EAS.
+
+============================================================
+RÈGLE ABSOLUE N°1 — NE PAS CASSER L'EXISTANT
+============================================================
+
+Avant toute modification :
+
+1. Lire et comprendre l'intégralité du code existant.
+2. Identifier ce qui fonctionne déjà.
+3. Identifier précisément ce qui doit être adapté.
+4. Identifier ce qui doit être ajouté sans toucher au reste.
+
+INTERDICTIONS ABSOLUES :
+
+- ne pas réécrire un module qui fonctionne sans raison justifiée ;
+- ne pas changer une signature publique sans nécessité ;
+- ne pas renommer des fichiers, classes, fonctions ou tables déjà utilisés ailleurs sans mettre à jour TOUS les appelants ;
+- ne pas supprimer une fonctionnalité existante sans la remplacer par une équivalente ;
+- ne pas introduire de dépendance qui casse la compatibilité existante ;
+- ne pas modifier la structure de la base SQLite sans prévoir la migration correspondante ;
+- ne pas modifier le contrat de l'API REST sans mise à jour cohérente côté serveur et côté client ;
+- ne pas laisser de TODO critique, de placeholder vide, de pseudo-code ou de fonction non implémentée.
+
+Toute modification doit être minimale, ciblée, et documentée.
+
+============================================================
+RÈGLE ABSOLUE N°2 — AUDIT AVANT MODIFICATION
+============================================================
+
+L'audit doit produire un état des lieux réel, pas théorique :
+
+- arborescence réelle du projet ;
+- liste des écrans existants ;
+- liste des services existants ;
+- liste des modèles et types existants ;
+- schéma SQLite réel ;
+- contrats d'API REST réellement utilisés ;
+- dépendances réellement déclarées ;
+- versions réellement présentes ;
+- points de fragilité ;
+- incohérences détectées ;
+- code mort ;
+- imports cassés ;
+- chemins cassés ;
+- ressources manquantes.
+
+L'audit doit distinguer clairement :
+
+- ce qui est déjà conforme ;
+- ce qui doit être adapté ;
+- ce qui doit être ajouté ;
+- ce qui doit être retiré.
+
+Aucune modification ne doit être proposée avant cet état des lieux.
+
+============================================================
+RÈGLE ABSOLUE N°3 — PAS DE DONNÉES FICTIVES
+============================================================
+
+L'application doit continuer à démarrer avec une base de données VIDE.
+
+Au premier lancement :
+
+Sources = 0
+Messages en attente = 0
+Messages envoyés = 0
+Messages échoués = 0
+Historique = vide
+
+Ne créer aucune source automatiquement.
+Ne créer aucune donnée de démonstration.
+Ne préremplir ni Orange, ni MTN, ni WhatsApp, ni aucun numéro, ni aucune application, ni aucun message.
+
+Les fichiers SQL de création de structure doivent uniquement créer les tables, index, contraintes et migrations nécessaires. Aucun INSERT de démonstration.
+
+============================================================
+RÈGLE ABSOLUE N°4 — PAS DE RÉFÉRENCE À EAS
+============================================================
+
+Aucune mention, aucun fichier, aucune commande, aucune configuration ne doit faire référence à :
+
+- EAS
+- EAS Build
+- eas.json
+- eas-cli
+- profils EAS
+- build cloud
+- distributions EAS
+
+Le projet doit rester un projet Expo / React Native / Android natif Kotlin compilable via les outils Android standards (Gradle, Android SDK, npx expo prebuild, npx expo run:android) sans passer par EAS.
+
+============================================================
+1. OBJECTIF FONCTIONNEL
+============================================================
+
+Application Android : MESSAGE RELAY.
+
+Elle permet à l'utilisateur de configurer explicitement des sources autorisées sur son appareil Android. Les événements correspondant aux règles configurées peuvent être enregistrés dans une base SQLite locale puis transmis immédiatement vers une API HTTP/HTTPS configurée par l'utilisateur.
+
+Architecture :
+
+SOURCE ANDROID
+↓
+CAPTURE ENGINE
+↓
+FILTER ENGINE
+↓
+SQLITE
+↓
+TRANSMISSION ENGINE
+↓
+REST API
+↓
+SERVEUR
+↓
+MYSQL / MARIADB
+
+L'utilisateur doit explicitement :
+
+- configurer les sources ;
+- activer les règles ;
+- accorder les permissions Android nécessaires ;
+- configurer l'URL API.
+
+============================================================
+2. ARCHITECTURE TECHNIQUE CIBLE
+============================================================
+
+Utiliser, en respectant ce qui est déjà en place :
+
+- Expo ;
+- React Native ;
+- TypeScript ;
+- Android natif Kotlin ;
+- Expo Prebuild / CNG ;
+- Gradle ;
+- Android SDK ;
+- SQLite ;
+- REST API ;
+- JSON ;
+- React Navigation ;
+- WorkManager ou mécanisme Android approprié pour les reprises ;
+- NotificationListenerService pour la capture des notifications lorsque l'utilisateur accorde cette permission.
+
+Le code Android natif doit être réellement intégré au projet Expo existant, sans casser la structure actuelle.
+
+============================================================
+3. VERSIONNAGE
+============================================================
+
+Ne pas choisir arbitrairement de nouvelles versions.
+
+Conserver les versions déjà présentes lorsque cela est possible.
+
+Toute mise à jour de version doit être justifiée, minimale, et compatible avec le reste.
+
+Vérifier la cohérence entre :
+
+package.json
+→ versions des dépendances
+→ Expo SDK
+→ React Native
+→ TypeScript
+→ Android Gradle Plugin
+→ Gradle
+→ Kotlin
+→ Android SDK
+→ bibliothèques natives
+→ config plugins.
+
+Documenter dans le README :
+
+Expo SDK :
+React Native :
+Node.js :
+Java/JDK :
+Android compileSdk :
+Android targetSdk :
+Android minSdk :
+Kotlin :
+Gradle :
+Android Gradle Plugin :
+
+============================================================
+4. STRUCTURE DU PROJET
+============================================================
+
+Respecter la structure existante.
+
+Si un fichier doit être ajouté, l'ajouter au bon endroit dans la structure déjà en place.
+
+Ne générer aucun fichier inutile.
+
+Ne pas déplacer de fichiers existants sans nécessité absolue.
+
+============================================================
+5. APPLICATION ANDROID
+============================================================
+
+L'application doit rester fonctionnelle après modification.
+
+Écran principal attendu :
+
+MESSAGE RELAY
+
+Configuration API :
+
+[ URL API ]
+
+[ TESTER ]
+
+Statut :
+
+API CONNECTÉE
+API NON DISPONIBLE
+NON CONFIGURÉE
+
+Transmission :
+
+ACTIVE
+INACTIVE
+
+Compteurs :
+
+En attente
+Envoyés
+Échecs
+
+Boutons :
+
+SOURCES
+HISTORIQUE
+PARAMÈTRES
+
+============================================================
+6. CONFIGURATION API
+============================================================
+
+L'utilisateur peut saisir :
+
+API URL
+API TOKEN
+DEVICE ID
+
+Le token ne doit jamais être hardcodé.
+Le DEVICE ID doit être généré automatiquement lors de l'installation ou du premier lancement.
+Il doit être persistant.
+Aucun DEVICE ID fictif.
+
+============================================================
+7. CAPTURE DES NOTIFICATIONS
+============================================================
+
+Le NotificationListenerService existant (ou à compléter) doit :
+
+- recevoir les notifications accessibles avec l'autorisation Android ;
+- identifier le package source ;
+- récupérer les champs disponibles ;
+- transmettre l'événement au moteur de filtrage ;
+- ne rien transmettre si aucune règle active ne correspond.
+
+La communication Kotlin ↔ React Native doit rester fonctionnelle (Native Module / Event Emitter).
+
+La détection du statut de permission doit être opérationnelle.
+L'utilisateur doit pouvoir ouvrir les paramètres Android pour activer l'accès aux notifications.
+
+============================================================
+8. FILTRAGE
+============================================================
+
+Une source contient :
+
+id
+name
+application_package
+sender_pattern
+keyword_pattern
+enabled
+
+Supporter :
+
+- correspondance exacte ;
+- correspondance partielle ;
+- correspondance insensible à la casse.
+
+Une règle désactivée ne doit jamais produire de message.
+Si aucune règle ne correspond : ne rien enregistrer.
+
+============================================================
+9. SQLITE
+============================================================
+
+Conserver la base SQLite existante.
+
+Tables attendues (adapter si déjà présentes) :
+
+messages :
+id, uuid, source_id, source_name, application_package, sender, title, body,
+received_at, status, attempts, last_attempt_at, sent_at, server_response, created_at
+
+sources :
+id, name, application_package, sender_pattern, keyword_pattern, enabled, created_at, updated_at
+
+settings :
+key, value
+
+Créer des migrations réelles si le schéma doit évoluer.
+La base doit s'initialiser automatiquement au premier lancement.
+Aucune donnée initiale.
+
+============================================================
+10. FILE D'ATTENTE
+============================================================
+
+Lorsqu'un événement correspond :
+
+1. générer UUID ;
+2. enregistrer SQLite ;
+3. status = PENDING ;
+4. lancer immédiatement une tentative de transmission.
+
+Si succès : SENT.
+Si échec : PENDING ou FAILED selon la stratégie d'erreur en place.
+
+Ne jamais supprimer automatiquement un message non confirmé par le serveur.
+
+============================================================
+11. TRANSMISSION
+============================================================
+
+Conserver / compléter l'ApiService existant avec :
+
+testConnection()
+sendMessages()
+
+Endpoint configurable par l'utilisateur.
+Exemple documentaire uniquement : POST /api/messages
+Aucune URL de production fictive dans le code.
+
+============================================================
+12. DÉDUPLICATION
+============================================================
+
+Chaque message possède un UUID unique.
+Le serveur doit posséder UNIQUE(uuid).
+Un message déjà reçu ne doit pas être inséré deux fois.
+
+============================================================
+13. RETRY
+============================================================
+
+En cas d'échec réseau : conserver localement.
+
+Prévoir :
+
+- nouvelle tentative ;
+- compteur attempts ;
+- last_attempt_at ;
+- gestion des erreurs HTTP ;
+- reprise lorsque la connexion revient.
+
+La transmission immédiate est prioritaire.
+Le mécanisme périodique sert uniquement de récupération.
+Ne jamais promettre une latence réseau fixe.
+
+============================================================
+14. INTERFACE SOURCES
+============================================================
+
+Écran SOURCES.
+
+Liste vide au premier lancement.
+Bouton : + AJOUTER UNE SOURCE
+
+Formulaire : Nom, Application, Identifiant/expéditeur, Mot-clé, Actif.
+Actions : Modifier, Désactiver, Supprimer.
+
+============================================================
+15. HISTORIQUE
+============================================================
+
+Onglets : EN ATTENTE, ENVOYÉS, ÉCHECS.
+Fonctions : Recherche, Filtrage, Ouverture, Suppression individuelle, Suppression multiple, Vider l'historique.
+Aucun historique fictif.
+
+============================================================
+16. SERVEUR PHP
+============================================================
+
+Conserver / compléter le serveur PHP fonctionnel dans server-test/.
+
+Structure attendue :
+
+server-test/
+├── public/
+│   ├── index.php
+│   ├── dashboard.php
+│   └── api/
+│       ├── health.php
+│       └── messages.php
+├── config/
+│   └── database.php
+├── database/
+│   └── schema.sql
+└── README.md
+
+Le serveur doit réellement fonctionner avec PHP + MySQL/MariaDB.
+
+============================================================
+17. API PHP
+============================================================
+
+GET /api/health
+POST /api/messages
+
+L'API doit :
+
+- vérifier Content-Type ;
+- parser le JSON ;
+- valider les champs ;
+- vérifier UUID ;
+- vérifier les doublons ;
+- insérer dans MySQL ;
+- retourner une réponse JSON réelle.
+
+============================================================
+18. MYSQL
+============================================================
+
+Créer uniquement la structure. Aucune donnée fictive.
+
+Table messages :
+
+id, uuid, device_id, source, application, sender, title, body, received_at, created_at
+
+UUID UNIQUE.
+Index : received_at, source, device_id.
+
+============================================================
+19. DASHBOARD
+============================================================
+
+Dashboard PHP réel.
+
+Afficher uniquement les données réellement présentes dans MySQL.
+Au démarrage : aucun message.
+Lorsque l'application transmet un événement : le message apparaît dans le dashboard.
+Prévoir actualisation automatique.
+Ne jamais afficher de données fictives.
+
+============================================================
+20. TEST DE BOUT EN BOUT
+============================================================
+
+Le README doit fournir une procédure réelle :
+
+1. installer les dépendances ;
+2. configurer PHP ;
+3. créer MySQL ;
+4. importer schema.sql ;
+5. démarrer le serveur PHP ;
+6. identifier l'adresse IP locale ;
+7. configurer l'URL dans l'application ;
+8. tester /api/health ;
+9. installer l'APK ;
+10. accorder l'autorisation Notification Listener ;
+11. créer une règle de test ;
+12. générer une notification réelle correspondant à cette règle ;
+13. vérifier SQLite ;
+14. vérifier POST ;
+15. vérifier MySQL ;
+16. vérifier le dashboard.
+
+Le test doit pouvoir être réalisé sans créer de compte fictif.
+
+============================================================
+21. MODE LOCAL
+============================================================
+
+Le serveur de test doit fonctionner avec :
+
+php -S 0.0.0.0:8080 -t public
+
+Le téléphone et le PC doivent être sur le même réseau local.
+Le README doit expliquer comment trouver l'adresse IP locale du PC.
+
+Exemple documentaire : http://192.168.x.x:8080
+Ne jamais mettre une adresse IP fictive dans la configuration réelle de l'application.
+
+============================================================
+22. API TOKEN
+============================================================
+
+Le serveur doit supporter un token d'authentification configurable.
+Le token doit être fourni par l'utilisateur.
+
+Ne pas intégrer "123456", "test", "secret" ou toute autre valeur fictive.
+
+Si le mode local sans authentification est nécessaire pour le premier test, il doit être explicitement activable dans la configuration du serveur.
+
+============================================================
+23. SÉCURITÉ
+============================================================
+
+Production : HTTPS obligatoire.
+Ne pas stocker les secrets dans Git.
+Ne pas afficher les tokens dans les logs.
+Ne pas écrire les tokens dans l'historique des messages.
+
+============================================================
+24. TESTS AUTOMATISÉS
+============================================================
+
+Conserver et compléter les tests réels existants lorsque cela est raisonnablement possible :
+
+- validation SQLite ;
+- repository messages ;
+- repository sources ;
+- filtrage ;
+- génération UUID ;
+- déduplication ;
+- API ;
+- traitement des réponses ;
+- erreurs réseau.
+
+Les tests doivent être exécutables avec des commandes documentées.
+
+============================================================
+25. README
+============================================================
+
+Le README doit être mis à jour pour refléter l'état réel du projet après adaptation.
+
+Inclure :
+
+PRÉREQUIS : Node.js, npm, Java/JDK, Expo CLI, PHP, MySQL/MariaDB.
+
+INSTALLATION : npm install
+
+CONFIGURATION : npx expo prebuild
+
+BUILD LOCAL : npx expo run:android
+
+INSTALLATION APK : instructions précises.
+
+============================================================
+26. RÉSERVE HONNÊTE À INDIQUER EN TÊTE DU README
+============================================================
+
+Ajouter explicitement en tête du README la réserve suivante :
+
+« Je n'ai pas d'environnement Gradle / Android / build ici pour lancer un vrai build avant livraison, donc je ne peux pas garantir à 100 % qu'aucun ajustement de version ne sera nécessaire. Le README explique quoi vérifier en premier (npx expo install --check, npx expo-doctor) si un décalage de versions apparaît au build. »
+
+============================================================
+27. LIVRABLE
+============================================================
+
+Livrer :
+
+- un rapport d'audit de l'existant ;
+- la liste précise des modifications effectuées et de leur justification ;
+- le projet complet mis à jour ;
+- l'arborescence finale ;
+- le code TypeScript ;
+- le code Kotlin ;
+- la configuration Expo ;
+- la configuration Android ;
+- la configuration Gradle ;
+- package.json ;
+- SQLite et migrations ;
+- le serveur PHP ;
+- le SQL ;
+- le dashboard ;
+- les tests ;
+- le README mis à jour.
+
+Aucun fichier fictif.
+Aucune donnée fictive.
+Aucun placeholder critique.
+Aucun TODO critique.
+Aucune configuration cachée nécessitant une intervention non documentée.
+Aucune référence à EAS.
+
+============================================================
+28. RÈGLE FINALE
+============================================================
+
+Le critère de réussite principal est :
+
+PROJET EXISTANT
+→ AUDIT
+→ ADAPTATION CIBLÉE
+→ LOGIQUE MÉTIER EXISTANTE PRÉSERVÉE
+→ NOUVELLES EXIGENCES COUVERTES
+→ PROJET TOUJOURS FONCTIONNEL
+
+Sans réécriture inutile, sans régression, sans dépendance à EAS, et sans modification manuelle non documentée du code.

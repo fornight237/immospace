@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LedionPana_Message_Checker</string>
+    <string name="activate_button">Activer</string>
+    <string name="validate_button">Valider</string>
+    <string name="welcome_title">Bienvenue sur LedionPana Message Checker par Tsana Evina Sieg Patrick</string>
+    <string name="webhook_hint">Entrez l\'URL du webhook</string>
+    <string name="webhook_status_default">Webhook non configuré</string>
+    <string name="webhook_status_description">Statut actuel du webhook affiché ici</string>
+    <string name="message_list_description">Liste des messages interceptés</string>
+</resources>

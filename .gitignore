@@ -1,0 +1,28 @@
+.gradle/
+build/
+**/build/
+/local.properties
+
+# Android Studio
+.idea/
+*.iml
+
+# APKs and keystores
+*.apk
+*.ap_
+*.keystore
+
+# macOS
+.DS_Store
+
+# Node / Expo
+node_modules/
+
+# Logs
+*.log
+
+# PHP server config (local secrets)
+server-test/config/config.php
+
+# Misc
+*.swp
